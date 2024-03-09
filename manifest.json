@@ -1,0 +1,12 @@
+{
+    "display_name": "Cache Chunker",
+    "loading_order": 100,
+    "requires": [],
+    "optional": [],
+    "generate_interceptor": "CacheChunker_trimContext",
+    "js": "index.js",
+    "author": "Omegastick",
+    "version": "0.1.0",
+    "homePage": "TBA",
+    "autoUpdate": true
+}
