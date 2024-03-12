@@ -5,6 +5,8 @@ import { getTokenCount, guesstimate } from '../../../tokenizers.js';
 const MODULE_NAME = 'CacheChunker';
 
 const settings = {
+    enabled: true,
+
     chunkSize: 2,
     maxMessageHistoryContext: 2000,
 };
@@ -15,6 +17,10 @@ const settings = {
  * @param {object[]} chat Array of chat messages
  */
 function trimContext(chat) {
+    if (!settings.enabled) {
+        return;
+    }
+
     console.debug('Trimming context, message count before:', chat.length);
 
     const startingPoint = getStartingPoint(chat, settings.maxMessageHistoryContext, settings.chunkSize);
@@ -68,6 +74,12 @@ jQuery(async () => {
     Object.assign(settings, extension_settings.cache_chunker);
 
     $('#extensions_settings2').append(renderExtensionTemplate('third-party/' + MODULE_NAME, 'settings'));
+
+    $('#cache_chunker_enabled').prop('checked', settings.enabled).on('input', () => {
+        settings.enabled = !!$('#cache_chunker_enabled').prop('checked');
+        Object.assign(extension_settings.cache_chunker, settings);
+        saveSettingsDebounced();
+    });
 
     $('#cache_chunker_chunk_size').val(settings.chunkSize).on('change', () => {
         settings.chunkSize = Number($('#cache_chunker_chunk_size').val());
